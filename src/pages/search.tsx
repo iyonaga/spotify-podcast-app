@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import type { NextApplicationPage } from './_app';
 import EpisodeList from '@/components/EpisodeList';
 import ShowList from '@/components/ShowList';
@@ -34,15 +35,20 @@ const Search: NextApplicationPage = () => {
     }
   }, [router.query.keyword]);
 
-  useEffect(() => {
-    if (query) {
-      (async () => {
-        const data = await spotifyApi.search(query, ['show', 'episode']);
-        setShows(data.body.shows!.items);
-        setEpisodes(data.body.episodes!.items);
-      })();
+  const { isLoading } = useQuery(
+    ['search', { query }],
+    async () => {
+      const data = await spotifyApi.search(query, ['show', 'episode']);
+      return data.body;
+    },
+    {
+      enabled: query.length > 0,
+      onSuccess: (data) => {
+        setShows(data.shows!.items);
+        setEpisodes(data.episodes!.items);
+      },
     }
-  }, [query, spotifyApi]);
+  );
 
   return (
     <>
@@ -54,13 +60,19 @@ const Search: NextApplicationPage = () => {
         defaultValue={query}
       />
       <hr />
-      <h2>ポッドキャスト</h2>
-      {shows.length > 0 ? <ShowList shows={shows} /> : <p>No results</p>}
-      <h2>エピソード</h2>
-      {episodes.length > 0 ? (
-        <EpisodeList episodes={episodes} />
+      {isLoading ? (
+        <p>Loading ...</p>
       ) : (
-        <p>No results</p>
+        <>
+          <h2>ポッドキャスト</h2>
+          {shows.length > 0 ? <ShowList shows={shows} /> : <p>No results</p>}
+          <h2>エピソード</h2>
+          {episodes.length > 0 ? (
+            <EpisodeList episodes={episodes} />
+          ) : (
+            <p>No results</p>
+          )}
+        </>
       )}
     </>
   );

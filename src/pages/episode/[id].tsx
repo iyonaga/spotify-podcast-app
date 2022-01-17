@@ -1,45 +1,50 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useQuery, useQueries, useQueryClient, useMutation } from 'react-query';
 import type { NextApplicationPage } from '../_app';
 import useSpotify from '@/hooks/useSpotify';
 
 const SingleEpisode: NextApplicationPage = () => {
   const spotifyApi = useSpotify();
-  const [episode, setEpisode] = useState<SpotifyApi.EpisodeObject>();
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const [isFavorite, setIsFavorite] = useState<boolean>();
+  const { id } = router.query;
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const { id } = router.query;
-
-    const getEpisode = async () => {
+  const { data: episode, isLoading: loadingEpisode } = useQuery(
+    ['singleEpisode', { id }],
+    async () => {
       const data = await spotifyApi.getEpisode(id as string);
-      setEpisode(data.body);
-    };
+      return data.body;
+    }
+  );
 
-    const getIsFavorite = async () => {
+  const { data: isFavorite, isLoading: loadingIsFavorite } = useQuery(
+    ['isFavorite', { id }],
+    async () => {
       const data = await spotifyApi.containsMySavedEpisodes([id as string]);
-      setIsFavorite(data.body[0]);
-    };
+      return data.body[0];
+    }
+  );
 
-    (async () => {
-      const promises = [getEpisode(), getIsFavorite()];
-      await Promise.all(promises);
-      setIsLoading(false);
-    })();
-  }, [spotifyApi, router.query]);
+  const isLoading = loadingEpisode && loadingIsFavorite;
 
-  const toggleFavorite = async (ids: string[]) => {
+  const addToMySavedEpisodes = useMutation((id: string) =>
+    spotifyApi.addToMySavedEpisodes([id])
+  );
+
+  const removeFromMySavedEpisodes = useMutation((id: string) =>
+    spotifyApi.removeFromMySavedEpisodes([id])
+  );
+
+  const toggleFavorite = async (id: string) => {
     if (isFavorite) {
-      await spotifyApi.removeFromMySavedEpisodes(ids);
+      await removeFromMySavedEpisodes.mutateAsync(id);
     } else {
-      await spotifyApi.addToMySavedEpisodes(ids);
+      await addToMySavedEpisodes.mutateAsync(id);
     }
 
-    setIsFavorite(!isFavorite);
+    queryClient.setQueryData(['isFavorite', { id }], !isFavorite);
   };
 
   if (isLoading) return <p>Loading ...</p>;
@@ -54,7 +59,7 @@ const SingleEpisode: NextApplicationPage = () => {
       />
       <h2>{episode.name}</h2>
       <p>{episode.show.name}</p>
-      <button onClick={() => toggleFavorite([episode.id])}>
+      <button onClick={() => toggleFavorite(episode.id)}>
         {isFavorite ? 'お気に入りから削除' : 'お気に入りに追加'}
       </button>
       <h3>詳細情報</h3>

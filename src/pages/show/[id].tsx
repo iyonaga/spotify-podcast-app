@@ -1,44 +1,50 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import type { NextApplicationPage } from '../_app';
 import EpisodeList from '@/components/EpisodeList';
 import useSpotify from '@/hooks/useSpotify';
 
 const SingleShow: NextApplicationPage = () => {
   const spotifyApi = useSpotify();
-  const [show, setShow] = useState<SpotifyApi.ShowObject>();
-  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const [isFollowing, setIsFollowing] = useState<boolean>();
+  const { id } = router.query;
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const { id } = router.query;
-    const getShow = async () => {
+  const { data: show, isLoading: loadingShow } = useQuery(
+    ['singleShow', { id }],
+    async () => {
       const data = await spotifyApi.getShow(id as string);
-      setShow(data.body);
-    };
+      return data.body;
+    }
+  );
 
-    const getIsFollowing = async () => {
+  const { data: isFollowing, isLoading: loadingIsFavorite } = useQuery(
+    ['isFollowing', { id }],
+    async () => {
       const data = await spotifyApi.containsMySavedShows([id as string]);
-      setIsFollowing(data.body[0]);
-    };
+      return data.body[0];
+    }
+  );
 
-    (async () => {
-      const promises = [getShow(), getIsFollowing()];
-      await Promise.all(promises);
-      setIsLoading(false);
-    })();
-  }, [spotifyApi, router.query]);
+  const isLoading = loadingShow && loadingIsFavorite;
 
-  const toggleFollow = async (ids: string[]) => {
+  const addToMySavedShows = useMutation((id: string) =>
+    spotifyApi.addToMySavedShows([id])
+  );
+
+  const removeFromMySavedShows = useMutation((id: string) =>
+    spotifyApi.removeFromMySavedShows([id])
+  );
+
+  const toggleFollow = async (id: string) => {
     if (isFollowing) {
-      await spotifyApi.removeFromMySavedShows(ids);
+      await removeFromMySavedShows.mutateAsync(id);
     } else {
-      await spotifyApi.addToMySavedShows(ids);
+      await addToMySavedShows.mutateAsync(id);
     }
 
-    setIsFollowing(!isFollowing);
+    queryClient.setQueriesData(['isFollowing', { id }], !isFollowing);
   };
 
   if (isLoading) return <p>Loading ...</p>;
@@ -53,7 +59,7 @@ const SingleShow: NextApplicationPage = () => {
       />
       <h2>{show.name}</h2>
       <p>{show.publisher}</p>
-      <button onClick={() => toggleFollow([show.id])}>
+      <button onClick={() => toggleFollow(show.id)}>
         {isFollowing ? 'フォロー解除' : 'フォロー'}
       </button>
       <h3>詳細情報</h3>

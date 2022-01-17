@@ -2,11 +2,15 @@ import '../styles/globals.css';
 import { NextPage } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import Auth from '@/components/Auth';
 
 export type NextApplicationPage<P = {}, IP = P> = NextPage<P, IP> & {
   requireAuth?: boolean;
 };
+
+const queryClient = new QueryClient();
 
 function MyApp({
   Component,
@@ -16,13 +20,16 @@ function MyApp({
 }) {
   return (
     <SessionProvider session={session}>
-      {Component.requireAuth ? (
-        <Auth>
+      <QueryClientProvider client={queryClient}>
+        {Component.requireAuth ? (
+          <Auth>
+            <Component {...pageProps} />
+          </Auth>
+        ) : (
           <Component {...pageProps} />
-        </Auth>
-      ) : (
-        <Component {...pageProps} />
-      )}
+        )}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </SessionProvider>
   );
 }
