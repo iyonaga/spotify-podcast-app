@@ -10,15 +10,37 @@ const SingleEpisode: NextApplicationPage = () => {
   const [episode, setEpisode] = useState<SpotifyApi.EpisodeObject>();
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const { id } = router.query;
+  const [isFavorite, setIsFavorite] = useState<boolean>();
 
   useEffect(() => {
-    (async () => {
+    const { id } = router.query;
+
+    const getEpisode = async () => {
       const data = await spotifyApi.getEpisode(id as string);
       setEpisode(data.body);
+    };
+
+    const getIsFavorite = async () => {
+      const data = await spotifyApi.containsMySavedEpisodes([id as string]);
+      setIsFavorite(data.body[0]);
+    };
+
+    (async () => {
+      const promises = [getEpisode(), getIsFavorite()];
+      await Promise.all(promises);
       setIsLoading(false);
     })();
-  }, [spotifyApi, id]);
+  }, [spotifyApi, router.query]);
+
+  const toggleFavorite = async (ids: string[]) => {
+    if (isFavorite) {
+      await spotifyApi.removeFromMySavedEpisodes(ids);
+    } else {
+      await spotifyApi.addToMySavedEpisodes(ids);
+    }
+
+    setIsFavorite(!isFavorite);
+  };
 
   if (isLoading) return <p>Loading ...</p>;
 
@@ -32,6 +54,9 @@ const SingleEpisode: NextApplicationPage = () => {
       />
       <h2>{episode.name}</h2>
       <p>{episode.show.name}</p>
+      <button onClick={() => toggleFavorite([episode.id])}>
+        {isFavorite ? 'お気に入りから削除' : 'お気に入りに追加'}
+      </button>
       <h3>詳細情報</h3>
       <p>{episode.description}</p>
       <Link href={`/show/${episode.show.id}`}>
