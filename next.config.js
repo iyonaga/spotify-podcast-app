@@ -7,6 +7,9 @@ const nextConfig = {
     config.resolve.alias['@'] = path.resolve(__dirname, './src/');
     return config;
   },
+  images: {
+    domains: ['i.scdn.co'],
+  },
 };
 
 module.exports = nextConfig;
