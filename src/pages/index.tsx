@@ -1,18 +1,20 @@
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { NextApplicationPage } from './_app';
+import ShowList from '@/components/ShowList';
 import useSpotify from '@/hooks/useSpotify';
 
 const Home: NextApplicationPage = () => {
   const spotifyApi = useSpotify();
-  const [shows, setShows] = useState<SpotifyApi.SavedShowObject[]>([]);
+  const [shows, setShows] = useState<SpotifyApi.ShowObjectSimplified[]>([]);
   const [episodes, setEpisodes] = useState<SpotifyApi.SavedEpisodeObject[]>([]);
 
   useEffect(() => {
     const getSavedShows = async () => {
       const shows = await spotifyApi.getMySavedShows({ limit: 5 });
-      setShows(shows.body.items);
+      setShows(shows.body.items.map(({ show }) => show));
     };
 
     const getSavedEpisodes = async () => {
@@ -28,18 +30,11 @@ const Home: NextApplicationPage = () => {
     <>
       <button onClick={() => signOut()}>Sign out</button>
       <hr />
-      {shows.map(({ show }) => (
-        <div key={show.id}>
-          <h2>{show.name}</h2>
-          <p>{show.publisher}</p>
-          <Image
-            src={show.images[1].url}
-            width={show.images[1].width}
-            height={show.images[1].height}
-            alt={show.name}
-          />
-        </div>
-      ))}
+      <h2>ポッドキャスト</h2>
+      <Link href="/collection/shows">
+        <a>すべて表示</a>
+      </Link>
+      <ShowList shows={shows} />
       <hr />
       {episodes.map(({ episode }) => (
         <div key={episode.id}>
