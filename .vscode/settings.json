@@ -1,0 +1,25 @@
+{
+  "eslint.packageManager": "yarn",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+  "stylelint.enable": true,
+  "css.validate": false,
+  "scss.validate": false,
+  "editor.codeActionsOnSave": [
+    // "source.organizeImports",
+    "source.fixAll.eslint",
+    "source.fixAll.stylelint"
+  ],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "[markdown]": {
+    "editor.formatOnSave": false
+  }
+}
