@@ -10,15 +10,36 @@ const SingleShow: NextApplicationPage = () => {
   const [show, setShow] = useState<SpotifyApi.ShowObject>();
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
-  const { id } = router.query;
+  const [isFollowing, setIsFollowing] = useState<boolean>();
 
   useEffect(() => {
-    (async () => {
+    const { id } = router.query;
+    const getShow = async () => {
       const data = await spotifyApi.getShow(id as string);
       setShow(data.body);
+    };
+
+    const getIsFollowing = async () => {
+      const data = await spotifyApi.containsMySavedShows([id as string]);
+      setIsFollowing(data.body[0]);
+    };
+
+    (async () => {
+      const promises = [getShow(), getIsFollowing()];
+      await Promise.all(promises);
       setIsLoading(false);
     })();
-  }, [spotifyApi, id]);
+  }, [spotifyApi, router.query]);
+
+  const toggleFollow = async (ids: string[]) => {
+    if (isFollowing) {
+      await spotifyApi.removeFromMySavedShows(ids);
+    } else {
+      await spotifyApi.addToMySavedShows(ids);
+    }
+
+    setIsFollowing(!isFollowing);
+  };
 
   if (isLoading) return <p>Loading ...</p>;
 
@@ -32,7 +53,9 @@ const SingleShow: NextApplicationPage = () => {
       />
       <h2>{show.name}</h2>
       <p>{show.publisher}</p>
-      <p>フォロー/フォロー解除ボタン</p>
+      <button onClick={() => toggleFollow([show.id])}>
+        {isFollowing ? 'フォロー解除' : 'フォロー'}
+      </button>
       <h3>詳細情報</h3>
       <p>{show.description}</p>
       <h3>エピソード</h3>
