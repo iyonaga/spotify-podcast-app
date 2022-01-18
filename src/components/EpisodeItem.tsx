@@ -3,6 +3,7 @@ import Link from 'next/link';
 import CalendarIcon from './Icons/Calendar';
 import ClockIcon from './Icons/Clock';
 import LinkButton from './LinkButton';
+import { millisToMinutes } from '@/lib/time';
 
 export interface EpisodeItemProps {
   episode: SpotifyApi.EpisodeObjectSimplified | SpotifyApi.EpisodeObject;
@@ -47,7 +48,7 @@ const EpisodeItem = ({ episode, displayShowName }: EpisodeItemProps) => {
                 <div className="flex items-center ml-[15px]">
                   <ClockIcon height={15} />
                   <p className="relative top-[1px] ml-[7px] text-[14px]">
-                    {episode.duration_ms}ms
+                    {millisToMinutes(episode.duration_ms)}分
                   </p>
                 </div>
               </div>

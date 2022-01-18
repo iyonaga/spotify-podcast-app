@@ -8,6 +8,7 @@ import ClockIcon from '@/components/Icons/Clock';
 import FavoriteIcon from '@/components/Icons/Favorite';
 import LinkButton from '@/components/LinkButton';
 import useSpotify from '@/hooks/useSpotify';
+import { millisToMinutes } from '@/lib/time';
 
 const SingleEpisode: NextApplicationPage = () => {
   const spotifyApi = useSpotify();
@@ -78,7 +79,7 @@ const SingleEpisode: NextApplicationPage = () => {
             <div className="flex items-center ml-[15px]">
               <ClockIcon height={15} />
               <p className="relative top-[1px] ml-[7px] text-[14px]">
-                {episode.duration_ms}ms
+                {millisToMinutes(episode.duration_ms)}分
               </p>
             </div>
             <button
