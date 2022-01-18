@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import SearchIcon from './Icons/Search';
 import { queryState } from '@/states/searchState';
 
 const SearchBar = () => {
@@ -20,14 +21,21 @@ const SearchBar = () => {
   };
 
   return (
-    <input
-      className="text-black"
-      type="text"
-      placeholder="Search"
-      onChange={handleChange}
-      onKeyPress={handleKeyPress}
-      defaultValue={query}
-    />
+    <div className="mt-[30px] w-full">
+      <div className="group relative w-[480px]">
+        <div className="absolute top-[15px] left-[23px]">
+          <SearchIcon className="fill-gray group-focus-within:fill-white" />
+        </div>
+        <input
+          className="px-[55px] w-full h-[50px] text-white bg-transparent rounded-[25px] border-2 border-gray focus:border-white border-solid outline-none"
+          type="text"
+          placeholder="Search"
+          onChange={handleChange}
+          onKeyPress={handleKeyPress}
+          defaultValue={query}
+        />
+      </div>
+    </div>
   );
 };
 

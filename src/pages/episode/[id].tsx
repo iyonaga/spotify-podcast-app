@@ -1,8 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useQuery, useQueries, useQueryClient, useMutation } from 'react-query';
+import { useQuery, useQueryClient, useMutation } from 'react-query';
 import type { NextApplicationPage } from '../_app';
+import CalendarIcon from '@/components/Icons/Calendar';
+import ClockIcon from '@/components/Icons/Clock';
+import FavoriteIcon from '@/components/Icons/Favorite';
+import LinkButton from '@/components/LinkButton';
 import useSpotify from '@/hooks/useSpotify';
 
 const SingleEpisode: NextApplicationPage = () => {
@@ -51,22 +55,53 @@ const SingleEpisode: NextApplicationPage = () => {
 
   return episode ? (
     <>
-      <Image
-        src={episode.images[1].url}
-        width={episode.images[1].width}
-        height={episode.images[1].height}
-        alt={episode.name}
-      />
-      <h2>{episode.name}</h2>
-      <p>{episode.show.name}</p>
-      <button onClick={() => toggleFavorite(episode.id)}>
-        {isFavorite ? 'お気に入りから削除' : 'お気に入りに追加'}
-      </button>
-      <h3>詳細情報</h3>
-      <p>{episode.description}</p>
-      <Link href={`/show/${episode.show.id}`}>
-        <a>すべてのエピソードを表示</a>
-      </Link>
+      <div className="flex gap-[37px]">
+        <div className="flex-none">
+          <Image
+            src={episode.images[1].url}
+            width={episode.images[1].width}
+            height={episode.images[1].height}
+            alt={episode.name}
+            className="rounded-[9px]"
+          />
+        </div>
+        <div>
+          <h1 className="text-[32px] font-bold">{episode.name}</h1>
+          <p className="mt-[5px] text-[20px] font-bold">{episode.show.name}</p>
+          <div className="flex gap-[10px] mt-[22px]">
+            <div className="flex items-center">
+              <CalendarIcon height={15} />
+              <p className="relative top-[1px] ml-[7px] text-[14px]">
+                {episode.release_date}
+              </p>
+            </div>
+            <div className="flex items-center ml-[15px]">
+              <ClockIcon height={15} />
+              <p className="relative top-[1px] ml-[7px] text-[14px]">
+                {episode.duration_ms}ms
+              </p>
+            </div>
+            <button
+              className="ml-[7px]"
+              onClick={() => toggleFavorite(episode.id)}
+            >
+              <FavoriteIcon height={15} fill={isFavorite ? 'white' : ''} />
+            </button>
+          </div>
+          <div className="mt-[30px]">
+            <LinkButton href={episode.external_urls.spotify} isExternal={true}>
+              Spotifyで開く
+            </LinkButton>
+          </div>
+        </div>
+      </div>
+      <h3 className="mt-[40px] mb-[30px] heading">詳細情報</h3>
+      <p className="text-[16px]">{episode.description}</p>
+      <div className="mt-[50px]">
+        <LinkButton href={`/show/${episode.show.id}`}>
+          すべてのエピソードを表示
+        </LinkButton>
+      </div>
     </>
   ) : null;
 };

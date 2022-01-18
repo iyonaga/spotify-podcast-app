@@ -51,20 +51,30 @@ const SingleShow: NextApplicationPage = () => {
 
   return show ? (
     <>
-      <Image
-        src={show.images[1].url}
-        width={show.images[1].width}
-        height={show.images[1].height}
-        alt={show.name}
-      />
-      <h2>{show.name}</h2>
-      <p>{show.publisher}</p>
-      <button onClick={() => toggleFollow(show.id)}>
-        {isFollowing ? 'フォロー解除' : 'フォロー'}
-      </button>
-      <h3>詳細情報</h3>
-      <p>{show.description}</p>
-      <h3>エピソード</h3>
+      <div className="flex gap-[37px]">
+        <div className="flex-none">
+          <Image
+            src={show.images[1].url}
+            width={show.images[1].width}
+            height={show.images[1].height}
+            alt={show.name}
+            className="rounded-[9px]"
+          />
+        </div>
+        <div>
+          <h1 className="text-[32px] font-bold">{show.name}</h1>
+          <p className="mt-[5px] text-[20px] font-bold">{show.publisher}</p>
+          <button
+            onClick={() => toggleFollow(show.id)}
+            className="mt-[22px] w-[160px] h-[40px] rounded-[20px] border-[1px] border-white border-solid"
+          >
+            {isFollowing ? 'フォロー解除' : 'フォロー'}
+          </button>
+        </div>
+      </div>
+      <h2 className="mt-[40px] mb-[20px] heading">詳細情報</h2>
+      <p className="text-[16px]">{show.description}</p>
+      <h2 className="mt-[50px] mb-[30px] heading">エピソード</h2>
       <EpisodeList episodes={show.episodes.items} />
     </>
   ) : null;

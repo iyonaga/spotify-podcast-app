@@ -37,15 +37,16 @@ const SavedShows: NextApplicationPage = () => {
   if (isLoading) return <p>Loading ...</p>;
 
   return data ? (
-    <InfiniteScroll
-      loader={<p key={0}>Loading...</p>}
-      hasMore={hasNextPage}
-      loadMore={() => fetchNextPage()}
-    >
-      {data.pages.map((page, index) => (
-        <ShowList key={index} shows={page.items} />
-      ))}
-    </InfiniteScroll>
+    <>
+      <h2 className="mb-[30px] heading">ポッドキャスト</h2>
+      <InfiniteScroll
+        loader={<p key={0}>Loading...</p>}
+        hasMore={hasNextPage}
+        loadMore={() => fetchNextPage()}
+      >
+        <ShowList shows={data.pages.flatMap(({ items }) => items)} />
+      </InfiniteScroll>
+    </>
   ) : null;
 };
 

@@ -4,7 +4,25 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        background: '#221d29',
+        gray: '#a0a0a0',
+      },
+    },
+    fontFamily: {
+      sans: [
+        'Hiragino Sans',
+        'Hiragino Kaku Gothic ProN',
+        'Yu Gothic',
+        'Meiryo',
+        'sans-serif',
+      ],
+    },
+    fill: (theme) => ({
+      white: theme('colors.white'),
+      gray: theme('colors.gray'),
+    }),
   },
   plugins: [],
 };

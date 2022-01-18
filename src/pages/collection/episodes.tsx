@@ -37,15 +37,16 @@ const SavedEpisodes: NextApplicationPage = () => {
   if (isLoading) return <p>Loading ...</p>;
 
   return data ? (
-    <InfiniteScroll
-      loader={<p key={0}>Loading...</p>}
-      hasMore={hasNextPage}
-      loadMore={() => fetchNextPage()}
-    >
-      {data.pages.map((page, index) => (
-        <EpisodeList key={index} episodes={page.items} />
-      ))}
-    </InfiniteScroll>
+    <>
+      <h2 className="mb-[30px] heading">お気に入りのエピソード</h2>
+      <InfiniteScroll
+        loader={<p key={0}>Loading...</p>}
+        hasMore={hasNextPage}
+        loadMore={() => fetchNextPage()}
+      >
+        <EpisodeList episodes={data.pages.flatMap(({ items }) => items)} />
+      </InfiniteScroll>
+    </>
   ) : null;
 };
 

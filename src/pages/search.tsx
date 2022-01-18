@@ -53,11 +53,11 @@ const Search: NextApplicationPage = () => {
         <p>Loading ...</p>
       ) : (
         <>
-          <h2>ポッドキャスト</h2>
+          <h2 className="mb-[30px] heading">ポッドキャスト</h2>
           {shows.length > 0 ? <ShowList shows={shows} /> : <p>No results</p>}
-          <h2>エピソード</h2>
+          <h2 className="mt-[50px] mb-[30px] heading">エピソード</h2>
           {episodes.length > 0 ? (
-            <EpisodeList episodes={episodes} />
+            <EpisodeList episodes={episodes} displayShowName={true} />
           ) : (
             <p>No results</p>
           )}
