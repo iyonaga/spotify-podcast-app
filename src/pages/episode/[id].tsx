@@ -97,7 +97,10 @@ const SingleEpisode: NextApplicationPage = () => {
         </div>
       </div>
       <h3 className="mt-[40px] mb-[30px] heading">詳細情報</h3>
-      <p className="text-[16px]">{episode.description}</p>
+      <p
+        className="text-[16px]"
+        dangerouslySetInnerHTML={{ __html: episode.html_description }}
+      ></p>
       <div className="mt-[50px]">
         <LinkButton href={`/show/${episode.show.id}`}>
           すべてのエピソードを表示
