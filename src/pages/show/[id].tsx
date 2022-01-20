@@ -1,6 +1,12 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import InfiniteScroll from 'react-infinite-scroller';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from 'react-query';
 import type { NextApplicationPage } from '../_app';
 import EpisodeList from '@/components/EpisodeList';
 import useSpotify from '@/hooks/useSpotify';
@@ -10,6 +16,22 @@ const SingleShow: NextApplicationPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const queryClient = useQueryClient();
+
+  const fetchEpisodes = async ({ pageParam = 1 }) => {
+    const limit = 50;
+    const {
+      body: { items, total },
+    } = await spotifyApi.getShowEpisodes(id as string, {
+      limit,
+      offset: (pageParam - 1) * limit,
+    });
+
+    return {
+      items,
+      nextPage: pageParam + 1,
+      totalPages: Math.ceil(total / limit),
+    };
+  };
 
   const { data: show, isLoading: loadingShow } = useQuery(
     ['singleShow', { id }],
@@ -24,6 +46,38 @@ const SingleShow: NextApplicationPage = () => {
     async () => {
       const data = await spotifyApi.containsMySavedShows([id as string]);
       return data.body[0];
+    }
+  );
+
+  const {
+    data: episodes,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery(
+    ['showEpisodes', { id, enabled: !loadingShow }],
+    fetchEpisodes,
+    {
+      enabled: !loadingShow,
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.nextPage <= lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      },
+      initialData: () => {
+        if (!show) {
+          return;
+        }
+
+        return {
+          pages: [
+            {
+              items: show.episodes.items ?? [],
+              nextPage: 2,
+              totalPages: Math.ceil(show.episodes.total / show.episodes.limit),
+            },
+          ],
+          pageParams: [1],
+        };
+      },
     }
   );
 
@@ -75,7 +129,13 @@ const SingleShow: NextApplicationPage = () => {
       <h2 className="mt-[40px] mb-[20px] heading">詳細情報</h2>
       <p className="text-[16px]">{show.description}</p>
       <h2 className="mt-[50px] mb-[30px] heading">エピソード</h2>
-      <EpisodeList episodes={show.episodes.items} />
+      <InfiniteScroll
+        loader={<p key={0}>Loading...</p>}
+        hasMore={hasNextPage}
+        loadMore={() => fetchNextPage()}
+      >
+        <EpisodeList episodes={episodes!.pages.flatMap(({ items }) => items)} />
+      </InfiniteScroll>
     </>
   ) : null;
 };
