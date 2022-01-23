@@ -20,8 +20,8 @@ const EpisodeItem = ({ episode, displayShowName }: EpisodeItemProps) => {
   };
 
   return (
-    <div className="w-full">
-      <div onClick={handleClick} className="flex gap-[20px] cursor-pointer">
+    <div className="p-[15px] w-full hover:bg-[#2a2838] rounded-[5px] transition cursor-pointer">
+      <div onClick={handleClick} className="flex gap-[20px]">
         <div className="flex-none w-[125px]">
           <Image
             className="rounded-[9px]"
@@ -66,7 +66,7 @@ const EpisodeItem = ({ episode, displayShowName }: EpisodeItemProps) => {
           </div>
         </div>
       </div>
-      <div className="absolute right-0 bottom-0">
+      <div className="absolute right-[15px] bottom-[15px]">
         <LinkButton href={episode.external_urls.spotify} isExternal={true}>
           Spotifyで開く
         </LinkButton>

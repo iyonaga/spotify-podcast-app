@@ -7,7 +7,7 @@ interface Props {
 
 const ShowItem: React.VFC<Props> = ({ show }) => {
   return (
-    <div className="w-full bg-[#2A2839] rounded-[5px]">
+    <div className="w-full bg-[#252332] hover:bg-[#2a2838] rounded-[5px] transition">
       <Link href={`/show/${show.id}`}>
         <a className="flex flex-col p-[15px] h-full">
           <Image

@@ -120,7 +120,7 @@ const SingleShow: NextApplicationPage = () => {
           <p className="mt-[5px] text-[20px] font-bold">{show.publisher}</p>
           <button
             onClick={() => toggleFollow(show.id)}
-            className="mt-[22px] w-[160px] h-[40px] rounded-[20px] border-[1px] border-white border-solid"
+            className="mt-[22px] w-[160px] h-[40px] hover:bg-[#2a2838] rounded-[20px] border-[1px] border-white border-solid transition"
           >
             {isFollowing ? 'フォロー解除' : 'フォロー'}
           </button>
@@ -128,7 +128,7 @@ const SingleShow: NextApplicationPage = () => {
       </div>
       <h2 className="mt-[40px] mb-[20px] heading">詳細情報</h2>
       <p className="text-[16px]">{show.description}</p>
-      <h2 className="mt-[50px] mb-[30px] heading">エピソード</h2>
+      <h2 className="mt-[50px] mb-[20px] heading">エピソード</h2>
       <InfiniteScroll
         loader={<p key={0}>Loading...</p>}
         hasMore={hasNextPage}

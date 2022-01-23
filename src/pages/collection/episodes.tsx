@@ -38,7 +38,7 @@ const SavedEpisodes: NextApplicationPage = () => {
 
   return data ? (
     <>
-      <h2 className="mb-[30px] heading">お気に入りのエピソード</h2>
+      <h2 className="mb-[20px] heading">お気に入りのエピソード</h2>
       <InfiniteScroll
         loader={<p key={0}>Loading...</p>}
         hasMore={hasNextPage}

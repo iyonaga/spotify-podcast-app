@@ -31,7 +31,7 @@ const Home: NextApplicationPage = () => {
       <div className="relative mb-[30px]">
         <h2 className="heading">ポッドキャスト</h2>
         <Link href="/collection/shows">
-          <a className="flex absolute right-0 bottom-[-10px] items-center">
+          <a className="flex absolute right-0 bottom-[-10px] items-center hover:opacity-60 transition">
             <p className="mr-[5px] text-[15px]">すべて表示</p>
             <ArrowRightIcon />
           </a>
@@ -42,7 +42,7 @@ const Home: NextApplicationPage = () => {
       <div className="relative mt-[50px] mb-[30px]">
         <h2 className="heading">お気に入りエピソード</h2>
         <Link href="/collection/episodes">
-          <a className="flex absolute right-0 bottom-[-10px] items-center">
+          <a className="flex absolute right-0 bottom-[-10px] items-center hover:opacity-60 transition">
             <p className="mr-[5px] text-[15px]">すべて表示</p>
             <ArrowRightIcon />
           </a>

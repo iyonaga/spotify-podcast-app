@@ -83,7 +83,7 @@ const SingleEpisode: NextApplicationPage = () => {
               </p>
             </div>
             <button
-              className="ml-[7px]"
+              className="ml-[7px] hover:opacity-70 transition"
               onClick={() => toggleFavorite(episode.id)}
             >
               <FavoriteIcon height={15} fill={isFavorite ? 'white' : ''} />

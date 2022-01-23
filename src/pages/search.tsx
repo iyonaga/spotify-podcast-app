@@ -55,7 +55,7 @@ const Search: NextApplicationPage = () => {
         <>
           <h2 className="mb-[30px] heading">ポッドキャスト</h2>
           {shows.length > 0 ? <ShowList shows={shows} /> : <p>No results</p>}
-          <h2 className="mt-[50px] mb-[30px] heading">エピソード</h2>
+          <h2 className="mt-[50px] mb-[20px] heading">エピソード</h2>
           {episodes.length > 0 ? (
             <EpisodeList episodes={episodes} displayShowName={true} />
           ) : (
