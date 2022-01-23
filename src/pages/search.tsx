@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
 import type { NextApplicationPage } from './_app';
-import EpisodeList from '@/components/EpisodeList';
-import Heading from '@/components/Heading';
-import ShowList from '@/components/ShowList';
+import EpisodeList from '@/components/model/episode/EpisodeList';
+import ShowList from '@/components/model/show/ShowList';
+import Heading from '@/components/ui/Heading';
 import useSpotify from '@/hooks/useSpotify';
 import { queryState } from '@/states/searchState';
 

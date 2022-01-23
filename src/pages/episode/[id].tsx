@@ -3,11 +3,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery, useQueryClient, useMutation } from 'react-query';
 import type { NextApplicationPage } from '../_app';
-import Heading from '@/components/Heading';
-import CalendarIcon from '@/components/Icons/Calendar';
-import ClockIcon from '@/components/Icons/Clock';
-import FavoriteIcon from '@/components/Icons/Favorite';
-import LinkButton from '@/components/LinkButton';
+import CalendarIcon from '@/components/icons/Calendar';
+import ClockIcon from '@/components/icons/Clock';
+import FavoriteIcon from '@/components/icons/Favorite';
+import Heading from '@/components/ui/Heading';
+import LinkButton from '@/components/ui/LinkButton';
 import useSpotify from '@/hooks/useSpotify';
 import { millisToMinutes } from '@/lib/time';
 

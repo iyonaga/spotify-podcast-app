@@ -1,8 +1,8 @@
 import InfiniteScroll from 'react-infinite-scroller';
 import { useInfiniteQuery } from 'react-query';
 import { NextApplicationPage } from '../_app';
-import Heading from '@/components/Heading';
-import ShowList from '@/components/ShowList';
+import ShowList from '@/components/model/show/ShowList';
+import Heading from '@/components/ui/Heading';
 import useSpotify from '@/hooks/useSpotify';
 
 const SavedShows: NextApplicationPage = () => {

@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import FavoriteIcon from './Icons/Favorite';
-import HomeIcon from './Icons/Home';
-import PodcastIcon from './Icons/Podcast';
+import FavoriteIcon from '../icons/Favorite';
+import HomeIcon from '../icons/Home';
+import PodcastIcon from '../icons/Podcast';
 
 const menus = [
   {

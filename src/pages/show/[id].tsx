@@ -8,8 +8,8 @@ import {
   useQueryClient,
 } from 'react-query';
 import type { NextApplicationPage } from '../_app';
-import EpisodeList from '@/components/EpisodeList';
-import Heading from '@/components/Heading';
+import EpisodeList from '@/components/model/episode/EpisodeList';
+import Heading from '@/components/ui/Heading';
 import useSpotify from '@/hooks/useSpotify';
 
 const SingleShow: NextApplicationPage = () => {

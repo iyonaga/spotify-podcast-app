@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import SearchIcon from './Icons/Search';
+import SearchIcon from '../icons/Search';
 import { queryState } from '@/states/searchState';
 
 const SearchBar = () => {

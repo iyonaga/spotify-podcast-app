@@ -14,7 +14,7 @@ const LinkButton: React.VFC<Props> = ({
 }) => {
   const Button = (
     <div className="inline-block">
-      <div className="flex justify-center items-center px-[20px] min-w-[160px] h-[40px] text-[14px] font-bold hover:bg-[#2a2838] rounded-[20px] border-[1px] border-white border-solid transition">
+      <div className="flex justify-center items-center px-[20px] min-w-[160px] h-[40px] text-14px font-bold hover:bg-[#2a2838] rounded-[20px] border-[1px] border-white border-solid transition">
         <div>{children}</div>
       </div>
     </div>

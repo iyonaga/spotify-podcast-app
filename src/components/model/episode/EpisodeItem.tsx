@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import CalendarIcon from './Icons/Calendar';
-import ClockIcon from './Icons/Clock';
-import LinkButton from './LinkButton';
+import CalendarIcon from '../../icons/Calendar';
+import ClockIcon from '../../icons/Clock';
+import LinkButton from '../../ui/LinkButton';
 import { millisToMinutes } from '@/lib/time';
 
 export interface EpisodeItemProps {

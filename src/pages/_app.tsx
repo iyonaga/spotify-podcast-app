@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { RecoilRoot } from 'recoil';
 import Auth from '@/components/Auth';
-import Layout from '@/components/Layout';
+import Layout from '@/components/layout/Layout';
 
 export type NextApplicationPage<P = {}, IP = P> = NextPage<P, IP> & {
   requireAuth?: boolean;
