@@ -2,6 +2,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { useInfiniteQuery } from 'react-query';
 import { NextApplicationPage } from '../_app';
 import EpisodeList from '@/components/EpisodeList';
+import Heading from '@/components/Heading';
 import useSpotify from '@/hooks/useSpotify';
 
 const SavedEpisodes: NextApplicationPage = () => {
@@ -38,7 +39,7 @@ const SavedEpisodes: NextApplicationPage = () => {
 
   return data ? (
     <>
-      <h2 className="mb-[20px] heading">お気に入りのエピソード</h2>
+      <Heading className="mb-[20px]">お気に入りのエピソード</Heading>
       <InfiniteScroll
         loader={<p key={0}>Loading...</p>}
         hasMore={hasNextPage}

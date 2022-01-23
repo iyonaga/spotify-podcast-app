@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery, useQueryClient, useMutation } from 'react-query';
 import type { NextApplicationPage } from '../_app';
+import Heading from '@/components/Heading';
 import CalendarIcon from '@/components/Icons/Calendar';
 import ClockIcon from '@/components/Icons/Clock';
 import FavoriteIcon from '@/components/Icons/Favorite';
@@ -96,7 +97,9 @@ const SingleEpisode: NextApplicationPage = () => {
           </div>
         </div>
       </div>
-      <h3 className="mt-[40px] mb-[30px] heading">詳細情報</h3>
+      <Heading tag="h2" variant="h1" className="mt-[40px] mb-[30px]">
+        エピソード内容
+      </Heading>
       <p
         className="text-[16px]"
         dangerouslySetInnerHTML={{ __html: episode.html_description }}

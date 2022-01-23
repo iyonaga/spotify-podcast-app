@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useQuery } from 'react-query';
 import { NextApplicationPage } from './_app';
 import EpisodeList from '@/components/EpisodeList';
+import Heading from '@/components/Heading';
 import ArrowRightIcon from '@/components/Icons/ArrowRight';
 import ShowList from '@/components/ShowList';
 import useSpotify from '@/hooks/useSpotify';
@@ -29,7 +30,7 @@ const Home: NextApplicationPage = () => {
   return (
     <>
       <div className="relative mb-[30px]">
-        <h2 className="heading">ポッドキャスト</h2>
+        <Heading>ポッドキャスト</Heading>
         <Link href="/collection/shows">
           <a className="flex absolute right-0 bottom-[-10px] items-center hover:opacity-60 transition">
             <p className="mr-[5px] text-[15px]">すべて表示</p>
@@ -40,7 +41,9 @@ const Home: NextApplicationPage = () => {
       {loadingShows && <p>Loading ...</p>}
       {shows && <ShowList shows={shows} />}
       <div className="relative mt-[50px] mb-[30px]">
-        <h2 className="heading">お気に入りエピソード</h2>
+        <Heading tag="h2" variant="h1">
+          お気に入りエピソード
+        </Heading>
         <Link href="/collection/episodes">
           <a className="flex absolute right-0 bottom-[-10px] items-center hover:opacity-60 transition">
             <p className="mr-[5px] text-[15px]">すべて表示</p>

@@ -7,9 +7,3 @@
     @apply font-sans antialiased leading-normal text-white bg-background min-w-[1080px];
   }
 }
-
-@layer components {
-  .heading {
-    @apply text-[28px] font-bold;
-  }
-}

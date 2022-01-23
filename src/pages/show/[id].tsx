@@ -9,6 +9,7 @@ import {
 } from 'react-query';
 import type { NextApplicationPage } from '../_app';
 import EpisodeList from '@/components/EpisodeList';
+import Heading from '@/components/Heading';
 import useSpotify from '@/hooks/useSpotify';
 
 const SingleShow: NextApplicationPage = () => {
@@ -126,9 +127,13 @@ const SingleShow: NextApplicationPage = () => {
           </button>
         </div>
       </div>
-      <h2 className="mt-[40px] mb-[20px] heading">詳細情報</h2>
+      <Heading tag="h2" variant="h1" className="mt-[40px] mb-[20px]">
+        詳細情報
+      </Heading>
       <p className="text-[16px]">{show.description}</p>
-      <h2 className="mt-[50px] mb-[20px] heading">エピソード</h2>
+      <Heading tag="h2" variant="h1" className="mt-[50px] mb-[20px]">
+        エピソード
+      </Heading>
       <InfiniteScroll
         loader={<p key={0}>Loading...</p>}
         hasMore={hasNextPage}

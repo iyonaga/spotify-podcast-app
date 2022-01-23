@@ -9,6 +9,18 @@ module.exports = {
         background: '#221d29',
         gray: '#a0a0a0',
       },
+      fontSize: () => {
+        const min = 10;
+        const max = 100;
+        const baseFontsize = 16;
+        const fontSize = {};
+
+        for (let i = min; i <= max; i++) {
+          fontSize[`${i}px`] = `${i / baseFontsize}rem`;
+        }
+
+        return fontSize;
+      },
     },
     fontFamily: {
       sans: [
