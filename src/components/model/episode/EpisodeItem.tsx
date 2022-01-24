@@ -1,17 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import CalendarIcon from '../../icons/Calendar';
-import ClockIcon from '../../icons/Clock';
 import LinkButton from '../../ui/LinkButton';
-import { millisToMinutes } from '@/lib/time';
+import EpisodeInfo from './EpisodeInfo';
 
 export interface EpisodeItemProps {
   episode: SpotifyApi.EpisodeObjectSimplified | SpotifyApi.EpisodeObject;
-  displayShowName?: boolean;
 }
 
-const EpisodeItem = ({ episode, displayShowName }: EpisodeItemProps) => {
+const EpisodeItem = ({ episode }: EpisodeItemProps) => {
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -44,24 +41,13 @@ const EpisodeItem = ({ episode, displayShowName }: EpisodeItemProps) => {
             </div>
           </div>
           <div className="mt-[10px]">
-            {displayShowName && 'show' in episode && (
+            {'show' in episode && (
               <Link href={`/show/${episode.show.id}`}>
                 <a className="text-[14px] font-bold">{episode.show.name}</a>
               </Link>
             )}
-            <div className="flex mt-[3px]">
-              <div className="flex items-center">
-                <CalendarIcon height={15} />
-                <p className="relative top-[1px] ml-[7px] text-[14px]">
-                  {episode.release_date}
-                </p>
-              </div>
-              <div className="flex items-center ml-[15px]">
-                <ClockIcon height={15} />
-                <p className="relative top-[1px] ml-[7px] text-[14px]">
-                  {millisToMinutes(episode.duration_ms)}分
-                </p>
-              </div>
+            <div className="mt-[3px]">
+              <EpisodeInfo episode={episode} />
             </div>
           </div>
         </div>

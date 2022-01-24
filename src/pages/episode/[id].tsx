@@ -6,6 +6,7 @@ import type { NextApplicationPage } from '../_app';
 import CalendarIcon from '@/components/icons/Calendar';
 import ClockIcon from '@/components/icons/Clock';
 import FavoriteIcon from '@/components/icons/Favorite';
+import EpisodeInfo from '@/components/model/episode/EpisodeInfo';
 import Heading from '@/components/ui/Heading';
 import LinkButton from '@/components/ui/LinkButton';
 import useSpotify from '@/hooks/useSpotify';
@@ -71,18 +72,7 @@ const SingleEpisode: NextApplicationPage = () => {
           <h1 className="text-[32px] font-bold">{episode.name}</h1>
           <p className="mt-[5px] text-[20px] font-bold">{episode.show.name}</p>
           <div className="flex gap-[10px] mt-[22px]">
-            <div className="flex items-center">
-              <CalendarIcon height={15} />
-              <p className="relative top-[1px] ml-[7px] text-[14px]">
-                {episode.release_date}
-              </p>
-            </div>
-            <div className="flex items-center ml-[15px]">
-              <ClockIcon height={15} />
-              <p className="relative top-[1px] ml-[7px] text-[14px]">
-                {millisToMinutes(episode.duration_ms)}分
-              </p>
-            </div>
+            <EpisodeInfo episode={episode} />
             <button
               className="ml-[7px] hover:opacity-70 transition"
               onClick={() => toggleFavorite(episode.id)}

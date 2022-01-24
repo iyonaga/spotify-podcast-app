@@ -51,7 +51,7 @@ const Home: NextApplicationPage = () => {
         </Link>
       </div>
       {loadingEpisodes && <p>Loading ...</p>}
-      {episodes && <EpisodeList episodes={episodes} displayShowName={true} />}
+      {episodes && <EpisodeList episodes={episodes} />}
     </>
   );
 };

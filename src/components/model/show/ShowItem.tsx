@@ -18,8 +18,8 @@ const ShowItem: React.VFC<Props> = ({ show }) => {
             alt={show.name}
             layout="responsive"
           />
-          <p className="mt-[9px] text-[16px] font-bold">{show.name}</p>
-          <p className="mt-[6px] text-[13px]">{show.publisher}</p>
+          <p className="mt-[9px] text-16px font-bold">{show.name}</p>
+          <p className="mt-[6px] text-13px">{show.publisher}</p>
         </a>
       </Link>
     </div>

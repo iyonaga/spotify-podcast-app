@@ -60,7 +60,7 @@ const Search: NextApplicationPage = () => {
             エピソード
           </Heading>
           {episodes.length > 0 ? (
-            <EpisodeList episodes={episodes} displayShowName={true} />
+            <EpisodeList episodes={episodes} />
           ) : (
             <p>No results</p>
           )}
