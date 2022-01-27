@@ -7,3 +7,14 @@
     @apply font-sans antialiased leading-normal text-white bg-background min-w-[1080px];
   }
 }
+
+/* nprogress */
+@import '~nprogress/nprogress';
+
+#nprogress .bar {
+  background: #9093c7;
+}
+
+#nprogress .bar .peg {
+  box-shadow: none;
+}
