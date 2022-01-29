@@ -4,11 +4,11 @@ import { useRouter } from 'next/router';
 import LinkButton from '../../ui/LinkButton';
 import EpisodeInfo from './EpisodeInfo';
 
-export interface EpisodeItemProps {
+interface Props {
   episode: SpotifyApi.EpisodeObjectSimplified | SpotifyApi.EpisodeObject;
 }
 
-const EpisodeItem = ({ episode }: EpisodeItemProps) => {
+const Item: React.VFC<Props> = ({ episode }) => {
   const router = useRouter();
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -61,4 +61,4 @@ const EpisodeItem = ({ episode }: EpisodeItemProps) => {
   );
 };
 
-export default EpisodeItem;
+export default Item;

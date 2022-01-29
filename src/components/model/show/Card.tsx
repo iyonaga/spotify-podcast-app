@@ -5,7 +5,7 @@ interface Props {
   show: SpotifyApi.ShowObjectSimplified;
 }
 
-const ShowItem: React.VFC<Props> = ({ show }) => {
+const Card: React.VFC<Props> = ({ show }) => {
   return (
     <div className="w-full bg-[#252332] hover:bg-[#2a2838] rounded-[5px] transition">
       <Link href={`/show/${show.id}`}>
@@ -26,4 +26,4 @@ const ShowItem: React.VFC<Props> = ({ show }) => {
   );
 };
 
-export default ShowItem;
+export default Card;
