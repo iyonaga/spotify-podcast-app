@@ -9,18 +9,74 @@ import {
 import useSpotify from './useSpotify';
 
 export const useGetShow = (
-  id: string,
+  showId: string,
   options?: UseQueryOptions<SpotifyApi.ShowObject>
 ) => {
   const spotifyApi = useSpotify();
 
   return useQuery<SpotifyApi.ShowObject>(
-    ['singleShow', { id }],
+    ['singleShow', { showId }],
     async () => {
-      const data = await spotifyApi.getShow(id);
+      const data = await spotifyApi.getShow(showId);
       return data.body;
     },
     {
+      ...options,
+    }
+  );
+};
+
+export const useGetSavedShows = (
+  limit = 10,
+  options?: UseQueryOptions<SpotifyApi.ShowObjectSimplified[]>
+) => {
+  const spotifyApi = useSpotify();
+
+  return useQuery<SpotifyApi.ShowObjectSimplified[]>(
+    ['savedShows', { limit }],
+    async () => {
+      const data = await spotifyApi.getMySavedShows({ limit });
+      return data.body.items.map(({ show }) => show);
+    },
+    { ...options }
+  );
+};
+
+type FetchSavedShowsResponse = {
+  items: SpotifyApi.ShowObjectSimplified[];
+  nextPage: number;
+  totalPages: number;
+};
+
+export const useInfiniteSavedShows = (
+  limit = 50,
+  options?: UseInfiniteQueryOptions<FetchSavedShowsResponse>
+) => {
+  const spotifyApi = useSpotify();
+
+  const fetchSavedShows = async ({ pageParam = 1 }) => {
+    const {
+      body: { items, total },
+    } = await spotifyApi.getMySavedShows({
+      limit,
+      offset: (pageParam - 1) * limit,
+    });
+
+    return {
+      items: items.map(({ show }) => show),
+      nextPage: pageParam + 1,
+      totalPages: Math.ceil(total / limit),
+    };
+  };
+
+  return useInfiniteQuery<FetchSavedShowsResponse>(
+    ['savedShows'],
+    fetchSavedShows,
+    {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.nextPage <= lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      },
       ...options,
     }
   );
@@ -33,16 +89,16 @@ type FetchShowEpisodesResponse = {
 };
 
 export const useInfiniteShowEpisodes = (
-  id: string,
+  showId: string,
   options?: UseInfiniteQueryOptions<FetchShowEpisodesResponse>
 ) => {
   const spotifyApi = useSpotify();
 
-  const fetchShowEpisodes = async (id: string, pageParam = 1) => {
+  const fetchShowEpisodes = async ({ pageParam = 1 }) => {
     const limit = 50;
     const {
       body: { items, total },
-    } = await spotifyApi.getShowEpisodes(id, {
+    } = await spotifyApi.getShowEpisodes(showId, {
       limit,
       offset: (pageParam - 1) * limit,
     });
@@ -55,10 +111,8 @@ export const useInfiniteShowEpisodes = (
   };
 
   return useInfiniteQuery<FetchShowEpisodesResponse>(
-    ['showEpisodes', { id }],
-    ({ pageParam }) => {
-      return fetchShowEpisodes(id, pageParam);
-    },
+    ['showEpisodes', { showId }],
+    fetchShowEpisodes,
     {
       getNextPageParam: (lastPage) => {
         if (lastPage.nextPage <= lastPage.totalPages) return lastPage.nextPage;
@@ -70,15 +124,15 @@ export const useInfiniteShowEpisodes = (
 };
 
 export const useIsFollowing = (
-  id: string,
+  showId: string,
   options?: UseQueryOptions<boolean>
 ) => {
   const spotifyApi = useSpotify();
 
   return useQuery<boolean>(
-    ['isFollowing', { id }],
+    ['isFollowing', { showId }],
     async () => {
-      const data = await spotifyApi.containsMySavedShows([id as string]);
+      const data = await spotifyApi.containsMySavedShows([showId]);
       return data.body[0];
     },
     { ...options }

@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
 import type { NextApplicationPage } from './_app';
 import EpisodeList from '@/components/model/episode/EpisodeList';
@@ -8,11 +7,10 @@ import EpisodeListPlaceholder from '@/components/model/episode/EpisodeListPlaceh
 import ShowList from '@/components/model/show/ShowList';
 import ShowListPlaceholder from '@/components/model/show/ShowListPlaceholder';
 import Heading from '@/components/ui/Heading';
-import useSpotify from '@/hooks/useSpotify';
+import { useGetSearchResult } from '@/hooks/useSearch';
 import { queryState } from '@/states/searchState';
 
 const Search: NextApplicationPage = () => {
-  const spotifyApi = useSpotify();
   const router = useRouter();
   const [shows, setShows] = useState<SpotifyApi.ShowObjectSimplified[]>([]);
   const [episodes, setEpisodes] = useState<
@@ -35,20 +33,12 @@ const Search: NextApplicationPage = () => {
     setQuery(query);
   }, [router.query, setQuery]);
 
-  const { isLoading } = useQuery(
-    ['search', { query }],
-    async () => {
-      const data = await spotifyApi.search(query, ['show', 'episode']);
-      return data.body;
+  const { isLoading } = useGetSearchResult(query, {
+    onSuccess: (data) => {
+      setShows(data.shows!.items);
+      setEpisodes(data.episodes!.items);
     },
-    {
-      enabled: query.length > 0,
-      onSuccess: (data) => {
-        setShows(data.shows!.items);
-        setEpisodes(data.episodes!.items);
-      },
-    }
-  );
+  });
 
   return (
     <>
