@@ -3,6 +3,7 @@ import { NextApplicationPage } from '../_app';
 import ShowList from '@/components/model/show/ShowList';
 import ShowListPlaceholder from '@/components/model/show/ShowListPlaceholder';
 import Heading from '@/components/ui/Heading';
+import Spinner from '@/components/ui/Spinner';
 import { useInfiniteSavedShows } from '@/hooks/useShow';
 
 const SavedShows: NextApplicationPage = () => {
@@ -20,7 +21,7 @@ const SavedShows: NextApplicationPage = () => {
       {data &&
         (hasShows(data) ? (
           <InfiniteScroll
-            loader={<p key={0}>Loading...</p>}
+            loader={<Spinner key={0} className="mt-[25px]" />}
             hasMore={hasNextPage}
             loadMore={() => fetchNextPage()}
           >

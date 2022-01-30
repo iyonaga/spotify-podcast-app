@@ -3,6 +3,7 @@ import { NextApplicationPage } from '../_app';
 import EpisodeList from '@/components/model/episode/EpisodeList';
 import EpisodeListPlaceholder from '@/components/model/episode/EpisodeListPlaceholder';
 import Heading from '@/components/ui/Heading';
+import Spinner from '@/components/ui/Spinner';
 import { useInfiniteSavedEpisodes } from '@/hooks/useEpisode';
 
 const SavedEpisodes: NextApplicationPage = () => {
@@ -20,7 +21,7 @@ const SavedEpisodes: NextApplicationPage = () => {
       {data &&
         (hasEpisodes(data) ? (
           <InfiniteScroll
-            loader={<p key={0}>Loading...</p>}
+            loader={<Spinner key={0} className="mt-[25px]" />}
             hasMore={hasNextPage}
             loadMore={() => fetchNextPage()}
           >
