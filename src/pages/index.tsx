@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useQuery } from 'react-query';
 import { NextApplicationPage } from './_app';
 import ArrowRightIcon from '@/components/icons/ArrowRight';
 import EpisodeList from '@/components/model/episode/EpisodeList';
@@ -7,26 +6,12 @@ import EpisodeListPlaceholder from '@/components/model/episode/EpisodeListPlaceh
 import ShowList from '@/components/model/show/ShowList';
 import ShowListPlaceholder from '@/components/model/show/ShowListPlaceholder';
 import Heading from '@/components/ui/Heading';
-import useSpotify from '@/hooks/useSpotify';
+import { useGetSavedEpisodes } from '@/hooks/useEpisode';
+import { useGetSavedShows } from '@/hooks/useShow';
 
 const Home: NextApplicationPage = () => {
-  const spotifyApi = useSpotify();
-
-  const { data: shows, isLoading: loadingShows } = useQuery(
-    ['savedShows', { limit: 5 }],
-    async () => {
-      const data = await spotifyApi.getMySavedShows({ limit: 10 });
-      return data.body.items.map(({ show }) => show);
-    }
-  );
-
-  const { data: episodes, isLoading: loadingEpisodes } = useQuery(
-    ['savedEpisodes', { limit: 5 }],
-    async () => {
-      const data = await spotifyApi.getMySavedEpisodes({ limit: 5 });
-      return data.body.items.map(({ episode }) => episode);
-    }
-  );
+  const { data: shows, isLoading: loadingShows } = useGetSavedShows();
+  const { data: episodes, isLoading: loadingEpisodes } = useGetSavedEpisodes();
 
   return (
     <>
