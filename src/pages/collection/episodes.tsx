@@ -2,6 +2,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { useInfiniteQuery } from 'react-query';
 import { NextApplicationPage } from '../_app';
 import EpisodeList from '@/components/model/episode/EpisodeList';
+import EpisodeListPlaceholder from '@/components/model/episode/EpisodeListPlaceholder';
 import Heading from '@/components/ui/Heading';
 import useSpotify from '@/hooks/useSpotify';
 
@@ -35,20 +36,29 @@ const SavedEpisodes: NextApplicationPage = () => {
     }
   );
 
-  if (isLoading) return <p>Loading ...</p>;
+  const hasEpisodes = ({ pages }: Exclude<typeof data, undefined>) => {
+    console.log('has');
+    return pages.some((page) => page.items.length > 0);
+  };
 
-  return data ? (
+  return (
     <>
       <Heading className="mb-[20px]">お気に入りのエピソード</Heading>
-      <InfiniteScroll
-        loader={<p key={0}>Loading...</p>}
-        hasMore={hasNextPage}
-        loadMore={() => fetchNextPage()}
-      >
-        <EpisodeList episodes={data.pages.flatMap(({ items }) => items)} />
-      </InfiniteScroll>
+      {isLoading && <EpisodeListPlaceholder />}
+      {data &&
+        (hasEpisodes(data) ? (
+          <InfiniteScroll
+            loader={<p key={0}>Loading...</p>}
+            hasMore={hasNextPage}
+            loadMore={() => fetchNextPage()}
+          >
+            <EpisodeList episodes={data.pages.flatMap(({ items }) => items)} />
+          </InfiniteScroll>
+        ) : (
+          <p>お気に入りのエピソードはありません</p>
+        ))}
     </>
-  ) : null;
+  );
 };
 
 SavedEpisodes.requireAuth = true;
