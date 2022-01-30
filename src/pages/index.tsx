@@ -3,7 +3,9 @@ import { useQuery } from 'react-query';
 import { NextApplicationPage } from './_app';
 import ArrowRightIcon from '@/components/icons/ArrowRight';
 import EpisodeList from '@/components/model/episode/EpisodeList';
+import EpisodeListPlaceholder from '@/components/model/episode/EpisodeListPlaceholder';
 import ShowList from '@/components/model/show/ShowList';
+import ShowListPlaceholder from '@/components/model/show/ShowListPlaceholder';
 import Heading from '@/components/ui/Heading';
 import useSpotify from '@/hooks/useSpotify';
 
@@ -37,8 +39,13 @@ const Home: NextApplicationPage = () => {
           </a>
         </Link>
       </div>
-      {loadingShows && <p>Loading ...</p>}
-      {shows && <ShowList shows={shows} />}
+      {loadingShows && <ShowListPlaceholder />}
+      {shows &&
+        (shows.length ? (
+          <ShowList shows={shows} />
+        ) : (
+          <p>フォロー中の番組はありません</p>
+        ))}
       <div className="relative mt-[50px] mb-[30px]">
         <Heading tag="h2" variant="h1">
           お気に入りエピソード
@@ -50,8 +57,13 @@ const Home: NextApplicationPage = () => {
           </a>
         </Link>
       </div>
-      {loadingEpisodes && <p>Loading ...</p>}
-      {episodes && <EpisodeList episodes={episodes} />}
+      {loadingEpisodes && <EpisodeListPlaceholder />}
+      {episodes &&
+        (episodes.length ? (
+          <EpisodeList episodes={episodes} />
+        ) : (
+          <p>お気に入りのエピソードはありません</p>
+        ))}
     </>
   );
 };

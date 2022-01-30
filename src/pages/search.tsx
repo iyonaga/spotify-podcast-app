@@ -4,7 +4,9 @@ import { useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
 import type { NextApplicationPage } from './_app';
 import EpisodeList from '@/components/model/episode/EpisodeList';
+import EpisodeListPlaceholder from '@/components/model/episode/EpisodeListPlaceholder';
 import ShowList from '@/components/model/show/ShowList';
+import ShowListPlaceholder from '@/components/model/show/ShowListPlaceholder';
 import Heading from '@/components/ui/Heading';
 import useSpotify from '@/hooks/useSpotify';
 import { queryState } from '@/states/searchState';
@@ -50,21 +52,23 @@ const Search: NextApplicationPage = () => {
 
   return (
     <>
+      <Heading className="mb-[30px]">ポッドキャスト</Heading>
       {isLoading ? (
-        <p>Loading ...</p>
+        <ShowListPlaceholder num={20} />
+      ) : shows.length ? (
+        <ShowList shows={shows} />
       ) : (
-        <>
-          <Heading className="mb-[30px]">ポッドキャスト</Heading>
-          {shows.length > 0 ? <ShowList shows={shows} /> : <p>No results</p>}
-          <Heading tag="h2" variant="h1" className="mt-[50px] mb-[20px]">
-            エピソード
-          </Heading>
-          {episodes.length > 0 ? (
-            <EpisodeList episodes={episodes} />
-          ) : (
-            <p>No results</p>
-          )}
-        </>
+        <p>番組が見つかりませんでした</p>
+      )}
+      <Heading tag="h2" variant="h1" className="mt-[50px] mb-[20px]">
+        エピソード
+      </Heading>
+      {isLoading ? (
+        <EpisodeListPlaceholder num={20} />
+      ) : episodes.length ? (
+        <EpisodeList episodes={episodes} />
+      ) : (
+        <p>エピソードが見つかりませんでした</p>
       )}
     </>
   );

@@ -2,6 +2,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { useInfiniteQuery } from 'react-query';
 import { NextApplicationPage } from '../_app';
 import ShowList from '@/components/model/show/ShowList';
+import ShowListPlaceholder from '@/components/model/show/ShowListPlaceholder';
 import Heading from '@/components/ui/Heading';
 import useSpotify from '@/hooks/useSpotify';
 
@@ -35,20 +36,29 @@ const SavedShows: NextApplicationPage = () => {
     }
   );
 
-  if (isLoading) return <p>Loading ...</p>;
+  const hasShows = ({ pages }: Exclude<typeof data, undefined>) => {
+    console.log(pages.some((page) => page.items.length > 0));
+    return pages.some((page) => page.items.length > 0);
+  };
 
-  return data ? (
+  return (
     <>
       <Heading className="mb-[30px]">ポッドキャスト</Heading>
-      <InfiniteScroll
-        loader={<p key={0}>Loading...</p>}
-        hasMore={hasNextPage}
-        loadMore={() => fetchNextPage()}
-      >
-        <ShowList shows={data.pages.flatMap(({ items }) => items)} />
-      </InfiniteScroll>
+      {isLoading && <ShowListPlaceholder />}
+      {data &&
+        (hasShows(data) ? (
+          <InfiniteScroll
+            loader={<p key={0}>Loading...</p>}
+            hasMore={hasNextPage}
+            loadMore={() => fetchNextPage()}
+          >
+            <ShowList shows={data.pages.flatMap(({ items }) => items)} />
+          </InfiniteScroll>
+        ) : (
+          <p>フォロー中の番組はありません</p>
+        ))}
     </>
-  ) : null;
+  );
 };
 
 SavedShows.requireAuth = true;
