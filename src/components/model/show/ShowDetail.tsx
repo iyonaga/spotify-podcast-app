@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import InfiniteScroll from 'react-infinite-scroller';
 import EpisodeList from '../episode/EpisodeList';
-import EpisodeListPlaceholder from '../episode/EpisodeListPlaceholder';
 import Heading from '@/components/ui/Heading';
 import Spinner from '@/components/ui/Spinner';
 import {

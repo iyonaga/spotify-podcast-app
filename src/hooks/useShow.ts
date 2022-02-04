@@ -143,7 +143,6 @@ export const useFollow = () => {
   const spotifyApi = useSpotify();
 
   return useMutation((id: string) => {
-    console.log(id);
     return spotifyApi.addToMySavedShows([id]);
   });
 };
@@ -168,7 +167,7 @@ export const useToggleFollow = () => {
       await followMutation.mutateAsync(showId);
     }
 
-    queryClient.invalidateQueries(['isFollowing', { id: showId }]);
+    queryClient.invalidateQueries(['isFollowing', { showId }]);
   };
 
   return toggleFollow;

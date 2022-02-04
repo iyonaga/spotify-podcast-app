@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-type Tag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+export type Tag = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 interface Props {
   tag?: Tag;
@@ -11,7 +11,7 @@ interface Props {
 
 const defaultStyle = 'font-bold';
 
-const stylesMap = {
+const stylesMap: { [tag in Tag]: string } = {
   h1: 'text-28px',
   h2: 'text-24px',
   h3: 'text-22px',

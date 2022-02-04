@@ -20,7 +20,7 @@ module.exports = {
     // '^@/components/(.*)$': '<rootDir>/components/$1',
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
   testEnvironment: 'jsdom',
   transform: {
