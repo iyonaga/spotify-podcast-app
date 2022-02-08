@@ -367,7 +367,7 @@ export const showsMock: SpotifyApi.ShowObjectSimplified[] = [
   },
 ];
 
-export const ShowObjectMock: SpotifyApi.ShowObject = {
+export const showObjectMock: SpotifyApi.ShowObject = {
   available_markets: [
     'AD',
     'AE',

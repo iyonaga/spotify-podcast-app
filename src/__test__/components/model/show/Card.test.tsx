@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import Card from '@/components/model/show/Card';
-import { showsMock } from '@/mocks/showsMock';
+import { showsMock } from '@/mocks/data/shows';
 
 describe('components/model/show/Card.tsx', () => {
   test('スナップショットが一致する', () => {

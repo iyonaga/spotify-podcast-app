@@ -1,12 +1,13 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { rest } from 'msw';
 import { useSession } from 'next-auth/react';
 import React, { ReactNode } from 'react';
 import { QueryCache, QueryClient, QueryClientProvider } from 'react-query';
 import ShowDetail from '@/components/model/show/ShowDetail';
-import * as hooks from '@/hooks/useShow';
-import { spotifyApi } from '@/lib/spotify';
-import { ShowObjectMock } from '@/mocks/showsMock';
+import { ENDPOINTS } from '@/mocks/constants';
+import { showObjectMock } from '@/mocks/data/shows';
+import { server } from '@/mocks/server';
 
 jest.mock('next-auth/react');
 const useSessionMocked = jest.mocked(useSession);
@@ -17,11 +18,6 @@ useSessionMocked.mockReturnValue({
   },
   status: 'authenticated',
 });
-
-const containsMySavedShowsMocked = jest.spyOn(
-  spotifyApi,
-  'containsMySavedShows'
-);
 
 const queryCache = new QueryCache();
 const queryClient = new QueryClient({
@@ -38,11 +34,6 @@ describe('components/model/show/ShowDetail.tsx', () => {
   });
 
   // test('番組詳細がレンダリングされる', async () => {
-  //   containsMySavedShowsMocked.mockResolvedValue({
-  //     body: [true],
-  //     headers: {},
-  //     statusCode: 200,
-  //   });
   //   render(
   //     <Wrapper>
   //       <ShowDetail show={ShowObjectMock} />
@@ -52,14 +43,15 @@ describe('components/model/show/ShowDetail.tsx', () => {
   // });
 
   test('フォロー中の場合はボタンのテキストが「フォロー解除」になる', async () => {
-    containsMySavedShowsMocked.mockResolvedValue({
-      body: [true],
-      headers: {},
-      statusCode: 200,
-    });
+    server.use(
+      rest.get(ENDPOINTS.CHECK_SAVED_SHOWS, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json([true]));
+      })
+    );
+
     render(
       <Wrapper>
-        <ShowDetail show={ShowObjectMock} />
+        <ShowDetail show={showObjectMock} />
       </Wrapper>
     );
     const button = await screen.findByRole('button');
@@ -67,42 +59,45 @@ describe('components/model/show/ShowDetail.tsx', () => {
   });
 
   test('フォローしていない場合はボタンのテキストが「フォロー」になる', async () => {
-    containsMySavedShowsMocked.mockResolvedValue({
-      body: [false],
-      headers: {},
-      statusCode: 200,
-    });
+    server.use(
+      rest.get(ENDPOINTS.CHECK_SAVED_SHOWS, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json([false]));
+      })
+    );
+
     render(
       <Wrapper>
-        <ShowDetail show={ShowObjectMock} />
+        <ShowDetail show={showObjectMock} />
       </Wrapper>
     );
     const button = await screen.findByRole('button');
     expect(button).toHaveTextContent(/^フォロー$/);
   });
 
-  test('ボタンをクリックするとtoggleFollow()が呼ばれる', async () => {
-    const useToggleFollowMocked = jest.spyOn(hooks, 'useToggleFollow');
-    const toggleFollowMock = jest.fn();
-    useToggleFollowMocked.mockImplementation(() => {
-      return toggleFollowMock;
-    });
-    const isFollowing = true;
-    containsMySavedShowsMocked.mockResolvedValue({
-      body: [isFollowing],
-      headers: {},
-      statusCode: 200,
-    });
+  test('ボタンをクリックするとテキストが切り替わる', async () => {
     render(
       <Wrapper>
-        <ShowDetail show={ShowObjectMock} />
+        <ShowDetail show={showObjectMock} />
       </Wrapper>
     );
     const button = await screen.findByRole('button');
-    userEvent.click(button);
-    expect(toggleFollowMock).toHaveBeenCalledWith(
-      ShowObjectMock.id,
-      isFollowing
+
+    server.use(
+      rest.get(ENDPOINTS.CHECK_SAVED_SHOWS, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json([false]));
+      })
     );
+
+    userEvent.click(button);
+    await waitFor(() => expect(button).toHaveTextContent(/^フォロー$/));
+
+    server.use(
+      rest.get(ENDPOINTS.CHECK_SAVED_SHOWS, (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json([true]));
+      })
+    );
+
+    userEvent.click(button);
+    await waitFor(() => expect(button).toHaveTextContent(/^フォロー解除$/));
   });
 });

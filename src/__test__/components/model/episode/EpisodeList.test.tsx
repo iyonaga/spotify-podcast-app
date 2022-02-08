@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import EpisodeList from '@/components/model/episode/EpisodeList';
-import { episodesMock } from '@/mocks/episodesMock';
+import { episodesMock } from '@/mocks/data/episodes';
 
 jest.mock('@/components/model/episode/Item', () => {
   return function DummyItem() {

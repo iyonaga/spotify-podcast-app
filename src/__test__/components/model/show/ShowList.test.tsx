@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import ShowList from '@/components/model/show/ShowList';
-import { showsMock } from '@/mocks/showsMock';
+import { showsMock } from '@/mocks/data/shows';
 import '@/components/model/show/Card';
 
 jest.mock('@/components/model/show/Card', () => {

@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/router';
 import Item from '@/components/model/episode/Item';
-import { episodesMock } from '@/mocks/episodesMock';
+import { episodesMock } from '@/mocks/data/episodes';
 
 jest.mock('next/router');
 
