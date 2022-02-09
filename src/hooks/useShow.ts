@@ -26,6 +26,41 @@ export const useGetShow = (
   );
 };
 
+export const useInfiniteShowEpisodes = (
+  showId: string,
+  limit = 50,
+  options?: UseInfiniteQueryOptions<FetchShowEpisodesResponse>
+) => {
+  const spotifyApi = useSpotify();
+
+  const fetchShowEpisodes = async ({ pageParam = 1 }) => {
+    const {
+      body: { items, total },
+    } = await spotifyApi.getShowEpisodes(showId, {
+      limit,
+      offset: (pageParam - 1) * limit,
+    });
+
+    return {
+      items,
+      nextPage: pageParam + 1,
+      totalPages: Math.ceil(total / limit),
+    };
+  };
+
+  return useInfiniteQuery<FetchShowEpisodesResponse>(
+    ['showEpisodes', { showId }],
+    fetchShowEpisodes,
+    {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.nextPage <= lastPage.totalPages) return lastPage.nextPage;
+        return undefined;
+      },
+      ...options,
+    }
+  );
+};
+
 export const useGetSavedShows = (
   limit = 10,
   options?: UseQueryOptions<SpotifyApi.ShowObjectSimplified[]>
@@ -86,41 +121,6 @@ type FetchShowEpisodesResponse = {
   items: SpotifyApi.EpisodeObjectSimplified[];
   nextPage: number;
   totalPages: number;
-};
-
-export const useInfiniteShowEpisodes = (
-  showId: string,
-  options?: UseInfiniteQueryOptions<FetchShowEpisodesResponse>
-) => {
-  const spotifyApi = useSpotify();
-
-  const fetchShowEpisodes = async ({ pageParam = 1 }) => {
-    const limit = 50;
-    const {
-      body: { items, total },
-    } = await spotifyApi.getShowEpisodes(showId, {
-      limit,
-      offset: (pageParam - 1) * limit,
-    });
-
-    return {
-      items,
-      nextPage: pageParam + 1,
-      totalPages: Math.ceil(total / limit),
-    };
-  };
-
-  return useInfiniteQuery<FetchShowEpisodesResponse>(
-    ['showEpisodes', { showId }],
-    fetchShowEpisodes,
-    {
-      getNextPageParam: (lastPage) => {
-        if (lastPage.nextPage <= lastPage.totalPages) return lastPage.nextPage;
-        return undefined;
-      },
-      ...options,
-    }
-  );
 };
 
 export const useIsFollowing = (

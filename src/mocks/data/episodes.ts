@@ -313,3 +313,12 @@ export const episodeObjectMock: SpotifyApi.EpisodeObject = {
   type: 'episode',
   uri: 'spotify:episode:2YhnMoLJ0ObEEp1gqNb5yV',
 };
+
+export const savedEpisodesMock: SpotifyApi.SavedEpisodeObject[] = [
+  ...Array(20),
+].map((_, index) => {
+  return {
+    added_at: '2022-02-09T18:07:16Z',
+    episode: { ...episodeObjectMock, id: `${index}` },
+  };
+});

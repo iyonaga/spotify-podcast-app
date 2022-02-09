@@ -1,3 +1,5 @@
+import { episodesMock } from './episodes';
+
 export const showsMock: SpotifyApi.ShowObjectSimplified[] = [
   {
     available_markets: [
@@ -2723,3 +2725,18 @@ export const showObjectMock: SpotifyApi.ShowObject = {
   type: 'show',
   uri: 'spotify:show:6F34Z6K3gaI1iLiRdXhdGt',
 };
+
+export const showEpisodesMock: SpotifyApi.EpisodeObjectSimplified[] = [
+  ...Array(20),
+].map((_, index) => {
+  return { ...episodesMock[0], id: `${index}` };
+});
+
+export const savedShowsMock: SpotifyApi.SavedShowObject[] = [...Array(20)].map(
+  (_, index) => {
+    return {
+      added_at: '2022-02-09T18:07:16Z',
+      show: { ...showObjectMock, id: `${index}` },
+    };
+  }
+);

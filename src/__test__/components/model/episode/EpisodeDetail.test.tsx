@@ -9,6 +9,7 @@ import { ENDPOINTS } from '@/mocks/constants';
 import { episodeObjectMock } from '@/mocks/data/episodes';
 import { server } from '@/mocks/server';
 
+jest.mock('react-infinite-scroller');
 jest.mock('next-auth/react');
 const useSessionMocked = jest.mocked(useSession);
 useSessionMocked.mockReturnValue({

@@ -4,7 +4,6 @@ import FavoriteIcon from '@/components/icons/Favorite';
 import Heading from '@/components/ui/Heading';
 import LinkButton from '@/components/ui/LinkButton';
 import { useIsFavorite, useToggleFavorite } from '@/hooks/useEpisode';
-import { useInfiniteShowEpisodes } from '@/hooks/useShow';
 
 interface Props {
   episode: SpotifyApi.EpisodeObject;
