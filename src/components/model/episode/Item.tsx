@@ -17,8 +17,12 @@ const Item: React.VFC<Props> = ({ episode }) => {
   };
 
   return (
-    <div className="p-[15px] w-full hover:bg-[#2a2838] rounded-[5px] transition cursor-pointer">
-      <div onClick={handleClick} className="flex gap-[20px]">
+    <div
+      className="p-[15px] w-full hover:bg-[#2a2838] rounded-[5px] transition cursor-pointer"
+      onClick={handleClick}
+      data-testid="episodeItem"
+    >
+      <div className="flex gap-[20px]">
         <div className="flex-none w-[125px]">
           <Image
             className="rounded-[9px]"

@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/ui/LinkButton.tsx スナップショットが一致する 1`] = `
+<DocumentFragment>
+  <a
+    href="https://example.com"
+  >
+    <div
+      class="inline-block"
+    >
+      <div
+        class="flex justify-center items-center px-[20px] min-w-[160px] h-[40px] text-14px font-bold hover:bg-[#2a2838] rounded-[20px] border-[1px] border-white border-solid transition"
+      >
+        <div>
+          link text
+        </div>
+      </div>
+    </div>
+  </a>
+</DocumentFragment>
+`;
+
+exports[`components/ui/LinkButton.tsx スナップショットが一致する 2`] = `
+<DocumentFragment>
+  <a
+    href="https://example.com"
+    rel="noreferrer noopener"
+    target="_blank"
+  >
+    <div
+      class="inline-block"
+    >
+      <div
+        class="flex justify-center items-center px-[20px] min-w-[160px] h-[40px] text-14px font-bold hover:bg-[#2a2838] rounded-[20px] border-[1px] border-white border-solid transition"
+      >
+        <div>
+          link text
+        </div>
+      </div>
+    </div>
+  </a>
+</DocumentFragment>
+`;

@@ -128,7 +128,7 @@ export const useToggleFavorite = () => {
       await addFavoriteMutation.mutateAsync(episodeId);
     }
 
-    queryClient.invalidateQueries(['isFavorite', { id: episodeId }]);
+    queryClient.invalidateQueries(['isFavorite', { episodeId }]);
   };
 
   return toggleFavorite;

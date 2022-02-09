@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import InfiniteScroll from 'react-infinite-scroller';
 import EpisodeList from '../episode/EpisodeList';
-import EpisodeListPlaceholder from '../episode/EpisodeListPlaceholder';
 import Heading from '@/components/ui/Heading';
 import Spinner from '@/components/ui/Spinner';
 import {
@@ -17,11 +16,12 @@ interface Props {
 const ShowDetail: React.VFC<Props> = ({ show }) => {
   const { data: isFollowing, isLoading } = useIsFollowing(show.id);
   const toggleFollow = useToggleFollow();
+  const limit = 50;
   const {
     data: episodes,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteShowEpisodes(show.id, {
+  } = useInfiniteShowEpisodes(show.id, limit, {
     initialData: {
       pages: [
         {
