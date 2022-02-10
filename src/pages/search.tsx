@@ -8,7 +8,7 @@ import ShowList from '@/components/model/show/ShowList';
 import ShowListPlaceholder from '@/components/model/show/ShowListPlaceholder';
 import Heading from '@/components/ui/Heading';
 import { useGetSearchResult } from '@/hooks/useSearch';
-import { queryState } from '@/states/searchState';
+import { searchInputState } from '@/states/searchState';
 
 const Search: NextApplicationPage = () => {
   const router = useRouter();
@@ -16,7 +16,8 @@ const Search: NextApplicationPage = () => {
   const [episodes, setEpisodes] = useState<
     SpotifyApi.EpisodeObjectSimplified[]
   >([]);
-  const [query, setQuery] = useRecoilState(queryState);
+  const [_, setSearchInput] = useRecoilState(searchInputState);
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     const { keyword } = router.query;
@@ -30,8 +31,15 @@ const Search: NextApplicationPage = () => {
       }
     }
 
+    setSearchInput(query);
     setQuery(query);
-  }, [router.query, setQuery]);
+  }, [router.query, setSearchInput]);
+
+  useEffect(() => {
+    return () => {
+      setSearchInput('');
+    };
+  }, [setSearchInput]);
 
   const { isLoading } = useGetSearchResult(query, {
     onSuccess: (data) => {

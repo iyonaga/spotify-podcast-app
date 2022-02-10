@@ -1,5 +1,4 @@
-import { act } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -45,6 +44,8 @@ describe('hooks/useSearch.tsx', () => {
         },
       } as React.ChangeEvent<HTMLInputElement>);
     });
+
+    expect(result.current.searchInput).toBe('text');
 
     result.current.handleKeyPress({
       key: 'Enter',
