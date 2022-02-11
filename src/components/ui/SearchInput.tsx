@@ -3,13 +3,13 @@ import SearchIcon from '../icons/Search';
 interface Props {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  query: string;
+  searchInput: string;
 }
 
 const SearchInput: React.VFC<Props> = ({
   handleChange,
   handleKeyPress,
-  query,
+  searchInput,
 }) => {
   return (
     <div className="group relative">
@@ -22,7 +22,7 @@ const SearchInput: React.VFC<Props> = ({
         placeholder="Search"
         onChange={handleChange}
         onKeyPress={handleKeyPress}
-        defaultValue={query}
+        value={searchInput}
       />
     </div>
   );

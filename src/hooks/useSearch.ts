@@ -1,33 +1,43 @@
 import { useRouter } from 'next/router';
-import { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useQuery, UseQueryOptions } from 'react-query';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import useSpotify from './useSpotify';
-import { queryState } from '@/states/searchState';
+import { searchInputState } from '@/states/searchState';
 
 const useSearch = () => {
   const router = useRouter();
-  const [text, setText] = useState('');
-  const query = useRecoilValue(queryState);
+  const [searchInput, setSearchInput] = useRecoilState(searchInputState);
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
-  }, []);
+  const handleSearch = useCallback(
+    (query) => {
+      router.push(`/search?keyword=${query}`);
+    },
+    [router]
+  );
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchInput(e.target.value);
+    },
+    [setSearchInput]
+  );
 
   const handleKeyPress = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        router.push(`/search?keyword=${text}`);
+        handleSearch(searchInput);
       }
     },
-    [router, text]
+    [handleSearch, searchInput]
   );
 
   return {
     handleChange,
     handleKeyPress,
-    query,
+    handleSearch,
+    searchInput,
   };
 };
 

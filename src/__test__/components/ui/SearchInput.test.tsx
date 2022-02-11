@@ -4,11 +4,11 @@ import SearchInput from '@/components/ui/SearchInput';
 
 const handleChange = jest.fn();
 const handleKeyPress = jest.fn();
-const query = '';
+const searchInputText = '';
 const props = {
   handleChange,
   handleKeyPress,
-  query,
+  searchInput: searchInputText,
 };
 
 describe('components/ui/SearchInput.tsx', () => {
@@ -24,8 +24,8 @@ describe('components/ui/SearchInput.tsx', () => {
 
   test('valueが設定される', () => {
     const { rerender } = render(<SearchInput {...props} />);
-    expect(screen.getByRole('textbox')).toHaveValue(query);
-    rerender(<SearchInput {...props} query="dummy" />);
+    expect(screen.getByRole('textbox')).toHaveValue(searchInputText);
+    rerender(<SearchInput {...props} searchInput="dummy" />);
     expect(screen.getByRole('textbox')).toHaveValue('dummy');
   });
 
@@ -33,7 +33,6 @@ describe('components/ui/SearchInput.tsx', () => {
     render(<SearchInput {...props} />);
     const input = screen.getByRole('textbox');
     userEvent.type(input, 'test');
-    expect(input).toHaveValue('test');
     expect(handleChange).toHaveBeenCalledTimes(4);
   });
 
