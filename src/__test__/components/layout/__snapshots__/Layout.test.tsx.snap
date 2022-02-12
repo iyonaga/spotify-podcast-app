@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`components/layout/Layout.tsx スナップショットが一致する 1`] = `
+<DocumentFragment>
+  <div
+    class="flex min-h-screen"
+  >
+    <div />
+    <div
+      class="px-[45px] pb-[40px] w-[calc(100%-250px)]"
+    >
+      <div />
+      <main
+        class="mt-[40px]"
+      >
+        test
+      </main>
+    </div>
+  </div>
+</DocumentFragment>
+`;
